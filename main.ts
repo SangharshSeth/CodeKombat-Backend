@@ -5,13 +5,15 @@ import * as http from "node:http";
 import { MatchMakingQueue } from "./Queue.ts";
 import {ClientData, Player} from "./types.ts";
 import {findRandomCodingQuestion} from "./coding_questions.ts";
+import * as cors from "npm:cors"
 import process from "node:process";
 
 const app = express()
+app.use(cors())
 const webSocketServer = http.createServer(app)
 const webSocket = new Server(webSocketServer, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: "https://codekombat.pages.dev",
         allowedHeaders: "*",
         methods: ["POST"]
     }
