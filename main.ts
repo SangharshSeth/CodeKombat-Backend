@@ -5,7 +5,7 @@ import * as http from "node:http";
 import { MatchMakingQueue } from "./Queue.ts";
 import {ClientData, Player} from "./types.ts";
 import {findRandomCodingQuestion} from "./coding_questions.ts";
-import * as cors from "npm:cors"
+import cors from "npm:cors"
 import process from "node:process";
 
 const app = express()
