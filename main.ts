@@ -91,8 +91,8 @@ const shutdown = () => {
     });
 };
 
-webSocketServer.listen(3000, () => {
-    console.log("Server Listening on port 3000")
+webSocketServer.listen(8080, () => {
+    console.log("Server Listening on port 8080")
 })
 
 process.on("SIGTERM", shutdown)
