@@ -33,11 +33,11 @@ export const DSAQuestions = [
     },
     {
         description: "Determine the number of strongly connected components in a directed graph using Tarjan's algorithm.",
-        difficulty: "Expert",
+        difficulty: "Hard",
     },
     {
         description: "Implement a balanced binary search tree (e.g., AVL Tree) with insertion, deletion, and balancing operations.",
-        difficulty: "Expert",
+        difficulty: "Hard",
     },
 ];
 

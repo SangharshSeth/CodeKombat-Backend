@@ -7,13 +7,14 @@ import {ClientData, Player} from "./types.ts";
 import {findRandomCodingQuestion} from "./coding_questions.ts";
 import cors from "npm:cors"
 import process from "node:process";
+import { PowerUps } from "./powerups.ts";
 
 const app = express()
 app.use(cors())
 const webSocketServer = http.createServer(app)
 const webSocket = new Server(webSocketServer, {
     cors: {
-        origin: "https://codekombat.pages.dev",
+        origin: "http://localhost:5173",
         allowedHeaders: "*",
         methods: ["POST"]
     }
@@ -74,6 +75,26 @@ webSocket.on("connection", (socket) => {
         }
 
     })
+    socket.on("power-up-activate", (data: number) => {
+
+      //Get the rooms
+      const rooms = socket.rooms;
+      console.log("You are in room", rooms)
+      if(rooms.size > 1){
+        //Get the roomId
+        const roomId = Array.from(rooms).find((item) => item !== socket.id)
+        if(roomId){
+          const otherPlayerSocketIds = Array.from(webSocket.sockets.adapter.rooms.get(roomId) || [])
+                    .find((id) => id !== socket.id);
+          
+          const powerDown = PowerUps.find((item) => item.id === data)
+          webSocket.to(otherPlayerSocketIds as string).emit("power-level-down", powerDown)
+          console.log(`Sent data ${powerDown}`)
+        }
+
+      }
+      console.log("Powerup activated", data , "from", socket.id)
+    })
     console.log("Client Connected", socket.id)
     socket.emit("hello", "hey")
 })
@@ -93,8 +114,8 @@ const shutdown = () => {
     });
 };
 
-webSocketServer.listen(8080, () => {
-    console.log("Server Listening on port 8080")
+webSocketServer.listen(3000, () => {
+    console.log("Server Listening on port 30412301")
 })
 
 process.on("SIGTERM", shutdown)
