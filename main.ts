@@ -1,5 +1,5 @@
 // @deno-types="npm:@types/express@4"
-import express, { NextFunction, Request, Response} from "npm:express"
+import express from "npm:express"
 import { Server } from "npm:socket.io"
 import * as http from "node:http";
 import { MatchMakingQueue } from "./Queue.ts";
