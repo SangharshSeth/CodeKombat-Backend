@@ -8,6 +8,14 @@ import {findRandomCodingQuestion} from "./coding_questions.ts";
 import cors from "npm:cors"
 import process from "node:process";
 import { PowerUps } from "./powerups.ts";
+import {createRoomAndJoin} from "./socket_rooms.ts";
+
+interface ChatMessage {
+    sender: string;
+    content: string;
+    senderType: string;
+    timeStamp: string;
+}
 
 const app = express()
 app.use(cors())
@@ -21,6 +29,7 @@ const webSocket = new Server(webSocketServer, {
 })
 const queue = new MatchMakingQueue()
 const activeSocketConnections = new Set<string>()
+
 
 webSocket.on("connection", (socket) => {
     //Handle Incoming connection from individual client
@@ -46,11 +55,14 @@ webSocket.on("connection", (socket) => {
             console.log("Player found")
             const opponent = queue.findByIndex(opponentIndex)
 
-            //Create a room with both the players
-            const roomId = `room-${player.name}-${opponent.name}-${Date.now()}`
-            console.log(`Room ${roomId}`)
-            socket.join(roomId)
-            webSocket.sockets.sockets.get(opponent.id)?.join(roomId)
+
+            //Create a room and join players
+            const roomId = `${player.name} & ${opponent.name}'s Server`
+            console.log(`RoomId: ${roomId}`)
+            const playerSockOne = socket;
+            const playerSockTwo = webSocket.sockets.sockets.get(opponent.id)
+
+            createRoomAndJoin(roomId, playerSockOne, playerSockTwo)
             webSocket.to(roomId).emit("match-update", "Opponent Found! Game Initializing.")
 
             //Change their status in queue
@@ -95,6 +107,33 @@ webSocket.on("connection", (socket) => {
       }
       console.log("Powerup activated", data , "from", socket.id)
     })
+    socket.on("chat-message", (data: { roomId: string; content: string; sender: string, timeStamp: string }) => {
+        console.log("Received message", data, data.roomId)
+        const { roomId, content, timeStamp, sender } = data;
+
+        // Validate that the sender is actually in the room
+        if (socket.rooms.has(roomId)) {
+            console.log("Received message", roomId, content, timeStamp)
+            const chatMessage: ChatMessage = {
+                sender,
+                content,
+                timeStamp,
+                senderType: "opponent"
+            };
+
+            // Broadcast to everyone in the room except sender
+            socket.to(roomId).emit("new-chat-message", chatMessage);
+        }
+    });
+
+    // Optional: Typing indicator
+    socket.on("typing-start", (roomId: string) => {
+        socket.to(roomId).emit("user-typing", socket.id);
+    });
+
+    socket.on("typing-end", (roomId: string) => {
+        socket.to(roomId).emit("user-typing-stopped", socket.id);
+    });
     console.log("Client Connected", socket.id)
     socket.emit("hello", "hey")
 })
@@ -114,8 +153,8 @@ const shutdown = () => {
     });
 };
 
-webSocketServer.listen(3000, () => {
-    console.log("Server Listening on port 30412301")
+webSocketServer.listen(8080, () => {
+    console.log("Server Listening on port 8080")
 })
 
 process.on("SIGTERM", shutdown)
