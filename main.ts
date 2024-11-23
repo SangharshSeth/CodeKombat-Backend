@@ -22,9 +22,9 @@ app.use(cors())
 const webSocketServer = http.createServer(app)
 const webSocket = new Server(webSocketServer, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: "https://codekombat.pages.dev",
         allowedHeaders: "*",
-        methods: ["POST"]
+        methods: ["*"]
     }
 })
 const queue = new MatchMakingQueue()
