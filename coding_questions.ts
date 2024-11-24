@@ -1,201 +1,226 @@
-export const DSAQuestions = [
-    // Easy Questions
-    {
-        description: "Given a string, return the length of the longest substring without repeating characters.",
-        difficulty: "Easy",
-        testCases: [
-            { input: "abcabcbb", output: 3, explanation: "The answer is 'abc', with length 3" },
-            { input: "bbbbb", output: 1, explanation: "The answer is 'b', with length 1" },
-            { input: "pwwkew", output: 3, explanation: "The answer is 'wke', with length 3" },
-            { input: "", output: 0, explanation: "Empty string" },
-            { input: " ", output: 1, explanation: "Single space" },
-            { input: "au", output: 2, explanation: "Two different characters" },
-            { input: "aab", output: 2, explanation: "Repeating character at start" },
-            { input: "dvdf", output: 3, explanation: "Repeating character in middle" }
-        ],
-        functionSignature: "function lengthOfLongestSubstring(s: string): number"
-    },
-    {
-        description: "Given a sorted array of integers, return an array of the squares of each number sorted in ascending order.",
-        difficulty: "Easy",
-        testCases: [
-            { input: [-4,-1,0,3,10], output: [0,1,9,16,100], explanation: "Squared and sorted" },
-            { input: [-7,-3,2,3,11], output: [4,9,9,49,121], explanation: "Handles negative numbers" },
-            { input: [0,0,0], output: [0,0,0], explanation: "All zeros" },
-            { input: [-2,-1], output: [1,4], explanation: "All negative" },
-            { input: [1,2], output: [1,4], explanation: "All positive" },
-            { input: [-1], output: [1], explanation: "Single negative" },
-            { input: [], output: [], explanation: "Empty array" },
-            { input: [-10,-5,0,5,10], output: [0,25,25,100,100], explanation: "Symmetric around zero" }
-        ],
-        functionSignature: "function sortedSquares(nums: number[]): number[]"
-    },
+interface TestCase {
+    input: string | number | boolean | undefined | any[];
+    output: string | number| boolean | undefined | null | any[];
+    explanation?: string;
+}
 
-    // Medium Questions
-    {
-        description: "Given a string containing digits from 2-9, return all possible letter combinations that the number could represent (like on a phone keypad).",
-        difficulty: "Medium",
-        testCases: [
-            { 
-                input: "23", 
-                output: ["ad","ae","af","bd","be","bf","cd","ce","cf"], 
-                explanation: "2=abc, 3=def" 
-            },
-            { 
-                input: "2", 
-                output: ["a","b","c"], 
-                explanation: "Single digit" 
-            },
-            { 
-                input: "", 
-                output: [], 
-                explanation: "Empty string" 
-            },
-            { 
-                input: "234", 
-                output: ["adg","adh","adi","aeg","aeh","aei","afg","afh","afi","bdg","bdh","bdi","beg","beh","bei","bfg","bfh","bfi","cdg","cdh","cdi","ceg","ceh","cei","cfg","cfh","cfi"], 
-                explanation: "Three digits" 
-            },
-            { 
-                input: "92", 
-                output: ["wa","wb","wc","xa","xb","xc","ya","yb","yc","za","zb","zc"], 
-                explanation: "Starting with 9" 
-            }
-        ],
-        functionSignature: "function letterCombinations(digits: string): string[]"
-    },
-    {
-        description: "Given an array of integers heights representing the height of bars in a histogram, return the area of the largest rectangle that can be formed using these bars.",
-        difficulty: "Medium",
-        testCases: [
-            { 
-                input: [2,1,5,6,2,3], 
-                output: 10, 
-                explanation: "The largest rectangle has area = 5 * 2 = 10 units" 
-            },
-            { 
-                input: [2,4], 
-                output: 4, 
-                explanation: "Two bars" 
-            },
-            { 
-                input: [1], 
-                output: 1, 
-                explanation: "Single bar" 
-            },
-            { 
-                input: [], 
-                output: 0, 
-                explanation: "Empty array" 
-            },
-            { 
-                input: [1,1,1,1], 
-                output: 4, 
-                explanation: "All same height" 
-            },
-            { 
-                input: [2,1,2], 
-                output: 3, 
-                explanation: "Valley pattern" 
-            },
-            { 
-                input: [1,2,3,4,5], 
-                output: 9, 
-                explanation: "Ascending heights" 
-            }
-        ],
-        functionSignature: "function largestRectangleArea(heights: number[]): number"
-    },
+interface Problem {
+    id: number;
+    title: string;
+    description: string;
+    difficulty: string;
+    category: 'math' | 'crypto' | 'basic-algebra';
+    testCases: TestCase[];
+    constraints: string[];
+}
 
-    // Hard Questions
+export const DSAQuestions: Problem[] = [
     {
-        description: "Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.",
-        difficulty: "Hard",
+        id: 1,
+        title: "Quadratic Equation Solver",
+        description: "Given three coefficients a, b, and c of a quadratic equation ax² + bx + c = 0, find its roots. Return roots in ascending order. If roots are imaginary, return null.",
+        difficulty: "easy",
+        category: "math",
         testCases: [
-            { 
-                input: { nums1: [1,3], nums2: [2] }, 
-                output: 2.0, 
-                explanation: "Merged array = [1,2,3] and median is 2" 
+            {
+                input: [1, -5, 6],
+                output: [2, 3],
+                explanation: "x² - 5x + 6 = 0 has roots x = 2 and x = 3"
             },
-            { 
-                input: { nums1: [1,2], nums2: [3,4] }, 
-                output: 2.5, 
-                explanation: "Merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5" 
+            {
+                input: [1, -4, 4],
+                output: [2, 2],
+                explanation: "x² - 4x + 4 = 0 has a repeated root x = 2"
             },
-            { 
-                input: { nums1: [], nums2: [1] }, 
-                output: 1.0, 
-                explanation: "One empty array" 
-            },
-            { 
-                input: { nums1: [2], nums2: [] }, 
-                output: 2.0, 
-                explanation: "Other empty array" 
-            },
-            { 
-                input: { nums1: [1,1,1], nums2: [1,1,1] }, 
-                output: 1.0, 
-                explanation: "All same numbers" 
-            },
-            { 
-                input: { nums1: [1,2,3,4,5], nums2: [6,7,8,9,10] }, 
-                output: 5.5, 
-                explanation: "No overlap between arrays" 
+            {
+                input: [1, 1, 1],
+                output: null,
+                explanation: "x² + x + 1 = 0 has imaginary roots"
             }
         ],
-        functionSignature: "function findMedianSortedArrays(nums1: number[], nums2: number[]): number"
+        constraints: [
+            "-100 ≤ a, b, c ≤ 100",
+            "a cannot be 0 (would make it linear equation)",
+            "All coefficients will be integers"
+        ]
     },
     {
-        description: "Given a string s and a pattern p, implement regular expression matching with support for '.' and '*' where '.' matches any single character and '*' matches zero or more of the preceding element.",
-        difficulty: "Hard",
+        id: 2,
+        title: "Exponent Pattern",
+        description: "Given a base number n and exponent k, find the last digit of n^k.",
+        difficulty: "easy",
+        category: "math",
         testCases: [
-            { 
-                input: { s: "aa", p: "a" }, 
-                output: false, 
-                explanation: "Single 'a' doesn't match 'aa'" 
+            {
+                input: [2, 5],
+                output: 2,
+                explanation: "2^5 = 32, last digit is 2"
             },
-            { 
-                input: { s: "aa", p: "a*" }, 
-                output: true, 
-                explanation: "a* means zero or more 'a's" 
+            {
+                input: [3, 4],
+                output: 1,
+                explanation: "3^4 = 81, last digit is 1"
             },
-            { 
-                input: { s: "ab", p: ".*" }, 
-                output: true, 
-                explanation: ".* matches any sequence" 
-            },
-            { 
-                input: { s: "", p: ".*" }, 
-                output: true, 
-                explanation: "Empty string matches .*" 
-            },
-            { 
-                input: { s: "", p: "" }, 
-                output: true, 
-                explanation: "Empty matches empty" 
-            },
-            { 
-                input: { s: "aab", p: "c*a*b" }, 
-                output: true, 
-                explanation: "c* can match zero occurrences" 
-            },
-            { 
-                input: { s: "mississippi", p: "mis*is*p*." }, 
-                output: false, 
-                explanation: "Complex pattern matching" 
-            },
-            { 
-                input: { s: "aaa", p: "a*a" }, 
-                output: true, 
-                explanation: "Combination of * and literal" 
+            {
+                input: [7, 3],
+                output: 3,
+                explanation: "7^3 = 343, last digit is 3"
             }
         ],
-        functionSignature: "function isMatch(s: string, p: string): boolean"
+        constraints: [
+            "1 ≤ n ≤ 20",
+            "1 ≤ k ≤ 100",
+            "Both n and k will be integers"
+        ]
+    },
+    {
+        id: 3,
+        title: "Simple Cipher Decoder",
+        description: "Each letter in a message is shifted backwards by 3 positions in the alphabet (e.g., 'd' becomes 'a', 'c' becomes 'z'). Decode the given message.",
+        difficulty: "easy",
+        category: "crypto",
+        testCases: [
+            {
+                input: "khoor",
+                output: "hello",
+                explanation: "Each letter shifted back 3 positions"
+            },
+            {
+                input: "dqw",
+                output: "ant",
+                explanation: "Each letter shifted back 3 positions"
+            },
+            {
+                input: "ccc",
+                output: "zzz",
+                explanation: "Wrapping around the alphabet"
+            }
+        ],
+        constraints: [
+            "Input string contains only lowercase letters",
+            "1 ≤ string length ≤ 100",
+            "Shift value is always 3"
+        ]
+    },
+    {
+        id: 4,
+        title: "Arithmetic Sequence Sum",
+        description: "Given first term 'a', common difference 'd', and number of terms 'n', find the sum of the arithmetic sequence.",
+        difficulty: "easy",
+        category: "basic-algebra",
+        testCases: [
+            {
+                input: [2, 3, 4],
+                output: 26,
+                explanation: "Sequence is 2,5,8,11 and sum = 26"
+            },
+            {
+                input: [1, 1, 5],
+                output: 15,
+                explanation: "Sequence is 1,2,3,4,5 and sum = 15"
+            },
+            {
+                input: [5, -2, 3],
+                output: 9,
+                explanation: "Sequence is 5,3,1 and sum = 9"
+            }
+        ],
+        constraints: [
+            "-50 ≤ a ≤ 50 (first term)",
+            "-20 ≤ d ≤ 20 (common difference)",
+            "1 ≤ n ≤ 100 (number of terms)",
+            "All inputs will be integers"
+        ]
+    },
+    {
+        id: 5,
+        title: "Binary to Decimal",
+        description: "Convert a binary string to its decimal equivalent. The binary string will only contain 0s and 1s.",
+        difficulty: "easy",
+        category: "math",
+        testCases: [
+            {
+                input: "1010",
+                output: 10,
+                explanation: "1*2³ + 0*2² + 1*2¹ + 0*2⁰ = 8 + 0 + 2 + 0 = 10"
+            },
+            {
+                input: "1111",
+                output: 15,
+                explanation: "1*2³ + 1*2² + 1*2¹ + 1*2⁰ = 8 + 4 + 2 + 1 = 15"
+            },
+            {
+                input: "100",
+                output: 4,
+                explanation: "1*2² + 0*2¹ + 0*2⁰ = 4 + 0 + 0 = 4"
+            }
+        ],
+        constraints: [
+            "1 ≤ string length ≤ 16",
+            "String contains only '0' and '1'",
+            "The decimal value will fit in a 32-bit integer"
+        ]
+    },
+    {
+        id: 6,
+        title: "Perfect Square Checker",
+        description: "Given a number n, determine if it's a perfect square (i.e., if there exists an integer x such that x² = n).",
+        difficulty: "easy",
+        category: "math",
+        testCases: [
+            {
+                input: 16,
+                output: true,
+                explanation: "4 * 4 = 16"
+            },
+            {
+                input: 25,
+                output: true,
+                explanation: "5 * 5 = 25"
+            },
+            {
+                input: 14,
+                output: false,
+                explanation: "No integer x exists where x * x = 14"
+            }
+        ],
+        constraints: [
+            "0 ≤ n ≤ 10000",
+            "Input will be an integer"
+        ]
+    },
+    {
+        id: 7,
+        title: "Factorial Zeros",
+        description: "Given a number n, count the number of trailing zeros in n! (n factorial).",
+        difficulty: "medium",
+        category: "math",
+        testCases: [
+            {
+                input: 5,
+                output: 1,
+                explanation: "5! = 120, has 1 trailing zero"
+            },
+            {
+                input: 10,
+                output: 2,
+                explanation: "10! = 3628800, has 2 trailing zeros"
+            },
+            {
+                input: 25,
+                output: 6,
+                explanation: "25! has 6 trailing zeros"
+            }
+        ],
+        constraints: [
+            "0 ≤ n ≤ 100",
+            "Input will be an integer"
+        ]
     }
 ];
-
+export default DSAQuestions;
 export function findRandomCodingQuestion(difficulty: string) {
-    const eligible = DSAQuestions.filter((item) => item.difficulty === difficulty);
+    const eligible = DSAQuestions.filter((item) => item.difficulty.toLowerCase() === difficulty.toLowerCase());
     const randomInteger = Math.floor(Math.random() * eligible.length);
     return eligible[randomInteger];
 }
