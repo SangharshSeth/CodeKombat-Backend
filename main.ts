@@ -90,6 +90,9 @@ SOCKET_IO.on("connection", (socket) => {
             socket.to(roomId).emit("new-chat-message", chatMessage);
         }
     });
+    socket.on("submit-code", (code: string) => {
+        // const isSuccessfulSubmission = validateSubmittion(code, socket.id)
+    })
 })
 
 const shutdown = () => {
